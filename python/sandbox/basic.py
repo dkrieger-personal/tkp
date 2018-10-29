@@ -38,6 +38,7 @@ def sort(nums):
                 tmp = nums[j]
                 nums[j] = nums[i]
                 nums[i] = tmp
+    return nums
 
 def issorted(nums):
     if (len(nums) == 0) or (len(nums) == 1):
@@ -48,15 +49,16 @@ def issorted(nums):
                 return False
     return True
 
+def test_sort ():
+    if sort ([5,4,7,10]) != [4,5,7,10]:
+        return False
+    if issorted([5,4,7,10]):
+        return False
+    return True
 
-nums = [5,4,7,10]
-for num in nums:
-    print(num)
-sort(nums)
-print("SORT:")
-for num in nums:
-    print(num)
-print(issorted(nums))
+
+
+
 
 
 
@@ -69,4 +71,8 @@ print(issorted(nums))
 if (not test_average ()):
     print ("AVERAGE FAILED")
     sys.exit(1)
+if (not test_sort ()):
+    print ("SORT FAILED")
+    sys.exit(2)
 sys.exit (0)
+
