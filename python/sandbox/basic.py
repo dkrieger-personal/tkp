@@ -18,17 +18,6 @@ def test_average ():
     if average([])!=0.0:
         return False
     return True
-
-
-print(sys.version)
-print("HI MOM!")
-
-# grade average
-
-
-
-
-
 def sort(nums):
     if (len(nums) == 0) or (len(nums) == 1):
         return nums
@@ -43,31 +32,19 @@ def sort(nums):
 def issorted(nums):
     if (len(nums) == 0) or (len(nums) == 1):
         return True
-    for i in range(0,len(nums)):
-        for j in range (i,len(nums)):
-            if (nums[i] > nums[j]):
-                return False
+    for i in range(0,len(nums)-1):
+        if (nums[i] > nums[i+1]):
+            return False
     return True
 
 def test_sort ():
+    if not issorted ([1,1,1,1]):
+        return False
     if sort ([5,4,7,10]) != [4,5,7,10]:
         return False
     if issorted([5,4,7,10]):
         return False
     return True
-
-
-
-
-
-
-
-
-
-
-
-
-
 if (not test_average ()):
     print ("AVERAGE FAILED")
     sys.exit(1)
@@ -75,4 +52,3 @@ if (not test_sort ()):
     print ("SORT FAILED")
     sys.exit(2)
 sys.exit (0)
-
