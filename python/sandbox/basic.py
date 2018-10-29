@@ -8,18 +8,26 @@ def average(scores):
         sum += score
     average = sum / len(scores)
     return average
+def test_average ():
+    if average([91.0, 89.0, 77.0, 96.0, 94.0]) != 89.4:
+        return False
+    if average([98.0, 100.0, 100.0, 97.0, 99.0, 95.0, 99.0, 100.0]) != 98.5:
+        return False
+    if average([78.0, 90.0, 85.0, 88.9]) != 85.475:
+        return False
+    if average([])!=0.0:
+        return False
+    return True
 
 
 print(sys.version)
 print("HI MOM!")
 
 # grade average
-scores = [98.0, 100.0, 100.0, 97.0, 99.0, 95.0,99.0, 100.0]
-evan = [78.0, 90.0, 85.0, 88.9]
 
 
-print("AVERAGE OF " + str(len(scores)) + " : " + str(average(scores)))
-print("AVERAGE OF " + str(len(evan)) + " : " + str(average(evan)))
+
+
 
 def sort(nums):
     if (len(nums) == 0) or (len(nums) == 1):
@@ -50,9 +58,15 @@ for num in nums:
     print(num)
 print(issorted(nums))
 
-alex = [91.0, 89.0, 77.0, 96.0,94.0]
 
-print("AVERAGE OF " +  str(len(alex)) + " : " + str(average(alex)))
 
-david = []
-print("AVERAGE OF " +  str(len(david)) + " : " + str(average(david)))
+
+
+
+
+
+
+if (not test_average ()):
+    print ("AVERAGE FAILED")
+    sys.exit(1)
+sys.exit (0)
