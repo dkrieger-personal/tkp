@@ -24,9 +24,9 @@ def calculate_median(l):
     if l_len < 1:
         return None
     if l_len % 2 == 0 :
-        return ( l[(l_len-1)/2] + l[(l_len+1)/2] ) / 2.0
+        return ( l[(int)((l_len-1)/2)] + l[(int)((l_len+1)/2)] ) / 2.0
     else:
-        return l[(l_len-1)/2]
+        return l[(int)((l_len-1)/2)]
 
 l = [1]
 print( calculate_median(l) )
