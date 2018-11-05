@@ -27,15 +27,14 @@ def calculate_median(l):
         return ( l[(int)((l_len-1)/2)] + l[(int)((l_len+1)/2)] ) / 2.0
     else:
         return l[(int)((l_len-1)/2)]
-
-l = [1]
-print( calculate_median(l) )
-
-l = [3,1,2]
-print( calculate_median(l) )
-
-l = [1,2,3,4]
-print( calculate_median(l) )
+def test_median ():
+    if (calculate_median([3,1,2]) )!= 2:
+        return False
+    if (calculate_median([4,3,1,2]) )!= 2.5:
+        return False
+    if (calculate_median([1,1,1,1,1]) )!= 1:
+        return False
+    return True
 def sort(nums):
     if (len(nums) == 0) or (len(nums) == 1):
         return nums
@@ -69,7 +68,7 @@ if (not test_average ()):
 if (not test_sort ()):
     print ("SORT FAILED")
     sys.exit(2)
-if (not calculate_median):
+if (not test_median ()):
     print ("MEDIAN FAILED")
     sys.exit(3)
 sys.exit (0)
