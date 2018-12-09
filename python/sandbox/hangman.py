@@ -22,6 +22,15 @@ def getguess ():
 def newindex (character):
     return ord(character)-97
 
+def numnonzero (mylist):
+    g=0
+    for i in range(0,len(mylist)):
+        if mylist[i]>0:
+            g=g+1
+    return g
+
+
+
 #choose a word (display length, initialize game)
 ThisGameWord = getword()
 #print(ThisGameWord, len(ThisGameWord))
@@ -30,7 +39,6 @@ print('Your word has this many letters: ',len(ThisGameWord))
 #guess a letter and put it in a variable
 MyGuess = [] #array of guesses
 youwin = 0 #indicates if you have won
-g=0 #counter of guesses
 
 a_val = ord('a')
 for k in range (a_val,a_val+26):
@@ -38,7 +46,7 @@ for k in range (a_val,a_val+26):
     # print (k,a_val,MyGuess[k-a_val],chr(k))
 
 
-while youwin == 0:
+while numnonzero(MyGuess)<3:
     currentguess=getguess()
     if currentguess=="":
         print ("Guesses must be single letters between a and z")
@@ -47,12 +55,12 @@ while youwin == 0:
     if (MyGuess[newindex(currentguess)]>0):
         print ("You already guessed that")
     else:
+        MyGuess[newindex(currentguess)] = 1
         for i in range (0,(len(ThisGameWord))):
             if (currentguess==ThisGameWord[i]):
                 if gotit == 0:
                     print ("Yes, new correct letter!")
                     gotit=1
-                MyGuess [newindex(currentguess)]=1
         if gotit == 0:
             print ("Sorry, that letter is incorrect")
 
@@ -67,10 +75,7 @@ while youwin == 0:
     print('')
     if correctcount == len(ThisGameWord):
         print('You win!')
-        youwin=1
-    else:
-        g+=1
-
+        break
 
 
 #insert the correctly guessed letters
