@@ -39,6 +39,38 @@ class TestDaily(unittest.TestCase):
             self.assertTrue(ticker in actual1)
             self.assertAlmostEqual(actual1[ticker], value, places=5)
 
+    def test_covariance(self):
+        daily = utils.daily(['PG', 'BEI.DE'], '2007-01-01', '2020-05-03')
+        actual = utils.covariance(utils.daily_log(daily))
+
+        expected_PG = pd.Series([0.035671, 0.011251], index=['PG', 'BEI.DE'])
+        actual_PG = actual['PG']
+        for ticker, value in expected_PG.items():
+            self.assertTrue(ticker in actual_PG)
+            self.assertAlmostEqual(actual_PG[ticker], value, places=5)
+
+        expected_BEI = pd.Series([0.011251, 0.047357], index=['PG', 'BEI.DE'])
+        actual_BEI = actual['BEI.DE']
+        for ticker, value in expected_BEI.items():
+            self.assertTrue(ticker in actual_BEI)
+            self.assertAlmostEqual(actual_BEI[ticker], value, places=5)
+
+    def test_correlation(self):
+        daily = utils.daily(['PG', 'BEI.DE'], '2007-01-01', '2020-05-03')
+        actual = utils.correlation(utils.daily_log(daily))
+
+        expected_PG = pd.Series([1.0, 0.27339], index=['PG', 'BEI.DE'])
+        actual_PG = actual['PG']
+        for ticker, value in expected_PG.items():
+            self.assertTrue(ticker in actual_PG)
+            self.assertAlmostEqual(actual_PG[ticker], value, places=5)
+
+        expected_BEI = pd.Series([0.27339, 1.0], index=['PG', 'BEI.DE'])
+        actual_BEI = actual['BEI.DE']
+        for ticker, value in expected_BEI.items():
+            self.assertTrue(ticker in actual_BEI)
+            self.assertAlmostEqual(actual_BEI[ticker], value, places=5)
+
 
 if __name__ == '__main__':
     unittest.main()

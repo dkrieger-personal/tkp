@@ -28,6 +28,14 @@ def daily_log(daily: pd.DataFrame) -> pd.DataFrame:
     return np.log(daily/daily.shift(1))
 
 
+def correlation(daily_log: pd.DataFrame) -> pd.DataFrame:
+    return daily_log.corr()
+
+
+def covariance(daily_log: pd.DataFrame) -> pd.DataFrame:
+    return daily_log.cov() * 250
+
+
 def risk(daily_log: pd.DataFrame) -> Dict[str, pd.core.series.Series]:
     risk = {}
     # for ticker,value in daily_log.to_dict().items():
@@ -50,8 +58,6 @@ def risk(daily_log: pd.DataFrame) -> Dict[str, pd.core.series.Series]:
 
 if __name__ == "__main__":
     d = daily(['PG', 'BEI.DE'], '2007-01-01', '2020-05-03')
-    plot_daily(d)
-    ld = daily_log(d)
-    print(ld)
-    pprint.pprint(risk(ld))
-    print(type(risk(ld)['annual_mean']))
+    print(correlation(daily_log(d)))
+
+
