@@ -24,29 +24,20 @@ class TestDaily(unittest.TestCase):
         self.assertAlmostEqual(annual['MSFT'], 0.1229, places=4)
 
     def test_risk(self):
-        expected = {
-            'BEI.DE': {
-                'annual_mean': 0.05978,
-                'annual_std': 0.21762,
-                'daily_mean': 0.00024,
-                'daily_std': 0.01376
-            },
-            'PG': {
-                'annual_mean': 0.07423,
-                'annual_std': 0.18887,
-                'daily_mean': 0.00030,
-                'daily_std': 0.01194
-            }
-        }
-
         daily = utils.daily(['PG', 'BEI.DE'], '2007-01-01', '2020-05-03')
         actual = utils.risk(utils.daily_log(daily))
-        for ticker, stats in expected.items():
-            self.assertTrue(ticker in actual)
-            for stat, value in stats.items():
-                self.assertTrue(stat in actual[ticker])
-                self.assertAlmostEqual(actual[ticker][stat], value, places=5)
 
+        actual1 = actual['annual_mean']
+        expected = pd.Series([0.074225, 0.059778], index=['PG', 'BEI.DE'])
+        for ticker, value in expected.items():
+            self.assertTrue(ticker in actual1)
+            self.assertAlmostEqual(actual1[ticker], value, places=5)
+
+        actual1 = actual['annual_std']
+        expected = pd.Series([0.18887, 0.21762], index=['PG', 'BEI.DE'])
+        for ticker, value in expected.items():
+            self.assertTrue(ticker in actual1)
+            self.assertAlmostEqual(actual1[ticker], value, places=5)
 
 
 if __name__ == '__main__':

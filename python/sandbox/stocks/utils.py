@@ -28,15 +28,23 @@ def daily_log(daily: pd.DataFrame) -> pd.DataFrame:
     return np.log(daily/daily.shift(1))
 
 
-def risk(daily_log: pd.DataFrame) -> Dict[str, Dict[str, float]]:
+def risk(daily_log: pd.DataFrame) -> Dict[str, pd.core.series.Series]:
     risk = {}
-    for ticker,value in daily_log.to_dict().items():
-        if ticker not in risk:
-            risk[ticker] = {}
-        risk[ticker]['daily_mean'] = daily_log[ticker].mean()
-        risk[ticker]['annual_mean'] = risk[ticker]['daily_mean'] * 250
-        risk[ticker]['daily_std'] = daily_log[ticker].std()
-        risk[ticker]['annual_std'] = risk[ticker]['daily_std'] * (250 ** 0.5)
+    # for ticker,value in daily_log.to_dict().items():
+    #     if ticker not in risk:
+    #         risk[ticker] = {}
+    #     risk[ticker]['daily_mean'] = daily_log[ticker].mean()
+    #     risk[ticker]['annual_mean'] = risk[ticker]['daily_mean'] * 250
+    #     risk[ticker]['daily_std'] = daily_log[ticker].std()
+    #     risk[ticker]['annual_std'] = risk[ticker]['daily_std'] * (250 ** 0.5)
+    # return risk
+    tickers = []
+    for ticker,v in daily_log.to_dict().items():
+        tickers.append(ticker)
+    risk['daily_mean'] = daily_log[tickers].mean()
+    risk['annual_mean'] = risk['daily_mean'] * 250
+    risk['daily_std'] = daily_log[tickers].std()
+    risk['annual_std'] = risk['daily_std'] * (250 ** 0.5)
     return risk
 
 
@@ -46,3 +54,4 @@ if __name__ == "__main__":
     ld = daily_log(d)
     print(ld)
     pprint.pprint(risk(ld))
+    print(type(risk(ld)['annual_mean']))
