@@ -38,14 +38,6 @@ def covariance(daily_log: pd.DataFrame) -> pd.DataFrame:
 
 def risk(daily_log: pd.DataFrame) -> Dict[str, pd.core.series.Series]:
     risk = {}
-    # for ticker,value in daily_log.to_dict().items():
-    #     if ticker not in risk:
-    #         risk[ticker] = {}
-    #     risk[ticker]['daily_mean'] = daily_log[ticker].mean()
-    #     risk[ticker]['annual_mean'] = risk[ticker]['daily_mean'] * 250
-    #     risk[ticker]['daily_std'] = daily_log[ticker].std()
-    #     risk[ticker]['annual_std'] = risk[ticker]['daily_std'] * (250 ** 0.5)
-    # return risk
     tickers = []
     for ticker,v in daily_log.to_dict().items():
         tickers.append(ticker)
@@ -57,7 +49,9 @@ def risk(daily_log: pd.DataFrame) -> Dict[str, pd.core.series.Series]:
 
 
 if __name__ == "__main__":
-    d = daily(['PG', 'BEI.DE'], '2007-01-01', '2020-05-03')
+    d = daily(['VWEHX', '^GSPC'], '2010-01-01', '2020-05-07')
     print(correlation(daily_log(d)))
+    print(covariance(daily_log(d)))
+    print(annual_returns(d))
 
 
