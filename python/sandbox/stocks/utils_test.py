@@ -74,10 +74,11 @@ class TestDaily(unittest.TestCase):
 
     def test_portfolio(self):
         d = utils.daily(['PG', 'BEI.DE'], '2010-01-01', '2020-05-07')
-        (mean, vol) = utils.portfolio(utils.daily_log(d), np.array([0.5, 0.5]))
+        (mean, vol, dr, ndr) = utils.portfolio(utils.daily_log(d), np.array([0.5, 0.5]))
         self.assertAlmostEqual(mean, .088128, places=5)
         self.assertAlmostEqual(vol, 0.14467, places=5)
-
+        self.assertAlmostEqual(dr, 0.00435, places=5)
+        self.assertAlmostEqual(ndr, 0.016575, places=5)
 
 if __name__ == '__main__':
     unittest.main()

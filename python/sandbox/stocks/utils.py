@@ -48,15 +48,16 @@ def risk(daily_log: pd.DataFrame) -> Dict[str, pd.core.series.Series]:
     return risk
 
 
-def portfolio(daily_log: pd.DataFrame, weights: np.array) -> (float, float):
+def portfolio(daily_log: pd.DataFrame, weights: np.array) -> (float, float, float, float):
     var = np.dot(weights.T, np.dot(daily_log.cov() * 250, weights))
     vol = var ** 0.5
 
-    tickers = []
-    for ticker, v in daily_log.to_dict().items():
-        tickers.append(ticker)
-    mean = np.dot(risk(daily_log)['annual_mean'], weights)
-    return (mean, vol)
+    r = risk(daily_log)
+
+    mean = np.dot(r['annual_mean'], weights)
+
+    dr = var - np.dot(r['annual_std'] ** 2, np.array([w ** 2 for w in weights]))
+    return mean, vol, dr, var - dr
 
 
 if __name__ == "__main__":
