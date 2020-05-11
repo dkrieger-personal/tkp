@@ -1,5 +1,6 @@
 import unittest
 
+import numpy as np
 import pandas as pd
 
 import utils
@@ -70,6 +71,12 @@ class TestDaily(unittest.TestCase):
         for ticker, value in expected_BEI.items():
             self.assertTrue(ticker in actual_BEI)
             self.assertAlmostEqual(actual_BEI[ticker], value, places=5)
+
+    def test_portfolio(self):
+        d = utils.daily(['PG', 'BEI.DE'], '2010-01-01', '2020-05-07')
+        (mean, vol) = utils.portfolio(utils.daily_log(d), np.array([0.5, 0.5]))
+        self.assertAlmostEqual(mean, .088128, places=5)
+        self.assertAlmostEqual(vol, 0.14467, places=5)
 
 
 if __name__ == '__main__':
