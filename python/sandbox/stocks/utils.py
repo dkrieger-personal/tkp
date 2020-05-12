@@ -62,7 +62,7 @@ def portfolio(daily_log: pd.DataFrame, weights: np.array) -> (float, float, floa
 
 if __name__ == "__main__":
     d = daily(['PG', 'BEI.DE'], '2010-01-01', '2020-05-07')
-    print(portfolio(daily_log(d), np.array([0.5, 0.5])))
+    plot_daily(d)
 
 
 
