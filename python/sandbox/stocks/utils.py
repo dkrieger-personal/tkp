@@ -87,13 +87,31 @@ def plot_lr(X: pd.Series, Y: pd.Series, xlabel, ylabel) -> None:
 
     plt.show()
 
+def efficient_frontier(tickers: List[str], start: str, end: str) -> (np.array, np.array):
+    returns = []
+    volatilities = []
+
+    dl = daily_log(daily(tickers, start, end))
+
+    for x in range(1000):
+        weights = np.random.random(len(tickers))
+        weights /= np.sum(weights)
+
+        (mean, vol, dr, ndr) = portfolio(dl, weights)
+        returns.append(mean)
+        volatilities.append(vol)
+
+    return np.array(returns), np.array(volatilities)
+
+def efficient_frontier_plot(returns: np.array, volatilities: np.array):
+    ef = pd.DataFrame({'Return': returns, 'Volatility': volatilities})
+    ef.plot(x='Volatility', y='Return', kind='scatter', figsize=(10, 6))
+    plt.xlabel('Expected Volatility')
+    plt.ylabel('Expected Return')
+    plt.axis([np.min(volatilities), np.max(volatilities), np.min(returns), np.max(returns)])
+    plt.show()
+
 
 if __name__ == "__main__":
-    housing = pd.read_excel(r'C:\Users\David\code\udemy\pyfi\stock\81 Running a Regression in Python\Python 3\Housing.xlsx')
-
-    xlabel = 'House Size (sq.ft.)'
-    ylabel = 'House Price'
-    X = housing[xlabel]
-    Y = housing[ylabel]
-
-    plot_lr(X, Y, xlabel, ylabel)
+    r, v = efficient_frontier(['PG', '^GSPC'], '2010-01-01', '2020-05-12')
+    efficient_frontier_plot(r, v)
