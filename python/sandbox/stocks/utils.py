@@ -38,6 +38,10 @@ def covariance(daily_log: pd.DataFrame) -> pd.DataFrame:
     return daily_log.cov() * 250
 
 
+def variance(daily_log: pd.DataFrame) -> pd.DataFrame:
+    return daily_log.var() * 250
+
+
 def risk(daily_log: pd.DataFrame) -> Dict[str, pd.core.series.Series]:
     risk = {}
     tickers = []
@@ -65,6 +69,7 @@ def portfolio(daily_log: pd.DataFrame, weights: np.array) -> (float, float, floa
 def linear_regression(X: pd.Series, Y: pd.Series) -> (float, float, float):
     slope, intercept, r_value, p_value, std_err = stats.linregress(X, Y)
     return [intercept, slope, r_value ** 2]
+
 
 def plot_lr(X: pd.Series, Y: pd.Series, xlabel, ylabel) -> None:
     # scale plot to 110% of max values
@@ -112,6 +117,16 @@ def efficient_frontier_plot(returns: np.array, volatilities: np.array):
     plt.show()
 
 
+def beta(stock: str, benchmark: str, start: str, end: str) -> float:
+    d_log = daily_log(daily([stock, benchmark], start, end))
+    cov_annual = covariance(d_log)
+    cov_with_market = cov_annual.iloc[0, 1]
+    var_annual = variance(d_log)
+    market_var = var_annual[benchmark]
+    return cov_with_market / market_var
+
+
 if __name__ == "__main__":
-    r, v = efficient_frontier(['PG', '^GSPC'], '2010-01-01', '2020-05-12')
-    efficient_frontier_plot(r, v)
+    beta = beta('PG', '^GSPC', '2012-01-01', '2016-12-31')
+    print(beta)
+

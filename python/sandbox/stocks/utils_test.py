@@ -80,5 +80,10 @@ class TestDaily(unittest.TestCase):
         self.assertAlmostEqual(dr, 0.00435, places=5)
         self.assertAlmostEqual(ndr, 0.016575, places=5)
 
+    def test_beta(self):
+        b = utils.beta('PG', '^GSPC', '2012-01-01', '2016-12-31')
+        self.assertAlmostEqual(b, 0.61596, places=5)
+
+
 if __name__ == '__main__':
     unittest.main()
