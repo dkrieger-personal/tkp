@@ -125,8 +125,12 @@ def beta(stock: str, benchmark: str, start: str, end: str) -> float:
     market_var = var_annual[benchmark]
     return cov_with_market / market_var
 
+def CAPM_return(beta: float, risk_free: float, market_return: float):
+    return risk_free + beta * (market_return - risk_free)
 
 if __name__ == "__main__":
     beta = beta('PG', '^GSPC', '2012-01-01', '2016-12-31')
     print(beta)
+    capm = CAPM_return(beta, 0.025, 0.075)
+    print(capm)
 

@@ -84,6 +84,10 @@ class TestDaily(unittest.TestCase):
         b = utils.beta('PG', '^GSPC', '2012-01-01', '2016-12-31')
         self.assertAlmostEqual(b, 0.61596, places=5)
 
+    def test_CAPM(self):
+        b = utils.beta('PG', '^GSPC', '2012-01-01', '2016-12-31')
+        capm = utils.CAPM_return(b, 0.025, 0.075)
+        self.assertAlmostEqual(capm, 0.055798, places=5)
 
 if __name__ == '__main__':
     unittest.main()
