@@ -80,14 +80,12 @@ class TestDaily(unittest.TestCase):
         self.assertAlmostEqual(dr, 0.00435, places=5)
         self.assertAlmostEqual(ndr, 0.016575, places=5)
 
-    def test_beta(self):
-        b = utils.beta('PG', '^GSPC', '2012-01-01', '2016-12-31')
-        self.assertAlmostEqual(b, 0.61596, places=5)
-
     def test_CAPM(self):
-        b = utils.beta('PG', '^GSPC', '2012-01-01', '2016-12-31')
-        capm = utils.CAPM_return(b, 0.025, 0.075)
+        beta, capm, sharpe = utils.CAPM('PG', '^GSPC', 0.025, 0.075, '2012-01-01', '2016-12-31')
+        self.assertAlmostEqual(beta, 0.61596, places=5)
         self.assertAlmostEqual(capm, 0.055798, places=5)
+        self.assertAlmostEqual(sharpe, 0.21558, places=5)
+
 
 if __name__ == '__main__':
     unittest.main()

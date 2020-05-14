@@ -117,20 +117,24 @@ def efficient_frontier_plot(returns: np.array, volatilities: np.array):
     plt.show()
 
 
-def beta(stock: str, benchmark: str, start: str, end: str) -> float:
+def CAPM(stock: str, benchmark: str, risk_free: float, market_return: float,
+         start: str, end: str) -> (float, float, float):
     d_log = daily_log(daily([stock, benchmark], start, end))
     cov_annual = covariance(d_log)
     cov_with_market = cov_annual.iloc[0, 1]
     var_annual = variance(d_log)
     market_var = var_annual[benchmark]
-    return cov_with_market / market_var
+    r = risk(d_log)
+    stock_std = r['annual_std'][stock]
 
-def CAPM_return(beta: float, risk_free: float, market_return: float):
-    return risk_free + beta * (market_return - risk_free)
+    beta = cov_with_market / market_var
+    capm = risk_free + beta * (market_return - risk_free)
+    sharpe = (capm - risk_free)/stock_std
+
+    return beta, capm, sharpe
+
 
 if __name__ == "__main__":
-    beta = beta('PG', '^GSPC', '2012-01-01', '2016-12-31')
-    print(beta)
-    capm = CAPM_return(beta, 0.025, 0.075)
-    print(capm)
+    beta, capm, sharpe = CAPM('PG', '^GSPC', 0.025, 0.075, '2012-01-01', '2016-12-31')
+    print(beta, capm, sharpe)
 
