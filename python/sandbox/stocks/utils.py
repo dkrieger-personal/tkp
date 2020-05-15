@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import math
 from typing import List, Dict
 from scipy import stats
+from scipy.stats import norm
 import statsmodels.api as sm
 
 
@@ -70,6 +71,10 @@ def linear_regression(X: pd.Series, Y: pd.Series) -> (float, float, float):
     slope, intercept, r_value, p_value, std_err = stats.linregress(X, Y)
     return [intercept, slope, r_value ** 2]
 
+def multivariate_regression(Xs: pd.Series, Y: pd.Series):
+    X1 = sm.add_constant(Xs)
+    lr = sm.OLS(Y, X1).fit()
+    print(lr.summary())
 
 def plot_lr(X: pd.Series, Y: pd.Series, xlabel, ylabel) -> None:
     # scale plot to 110% of max values
@@ -134,7 +139,28 @@ def CAPM(stock: str, benchmark: str, risk_free: float, market_return: float,
     return beta, capm, sharpe
 
 
+def monty_carlo(ticker: str, start: str, end: str, t_intervals: int, iterations: int) -> (np.array,List[float]):
+    data = daily([ticker], start, end)
+    log_returns = np.log(1 + data.pct_change())
+    u = log_returns.mean()
+    var = log_returns.var()
+    drift = u - (0.5 * var)
+    stddev = log_returns.std()
+    daily_returns = np.exp(drift.values + stddev.values * norm.ppf(np.random.rand(t_intervals, iterations)))
+    S0 = data.iloc[-1]
+    price_list = np.zeros_like(daily_returns)
+    price_list[0] = S0
+    for t in range(1, t_intervals):
+        price_list[t] = price_list[t - 1] * daily_returns[t]
+    final_price = []
+    for i in range(iterations):
+        final_price.append(price_list[999][i])
+    return price_list, final_price
+
+
 if __name__ == "__main__":
-    beta, capm, sharpe = CAPM('PG', '^GSPC', 0.025, 0.075, '2012-01-01', '2016-12-31')
-    print(beta, capm, sharpe)
+    mc, final_price = monty_carlo('FB', '2015-01-01', '2020-05-14', 1000, 100)
+    pprint.pprint(sorted(final_price))
+    plt.hist(final_price, bins=20)
+    plt.show()
 
